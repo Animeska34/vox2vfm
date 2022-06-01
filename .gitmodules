@@ -1,0 +1,6 @@
+[submodule "libraries/voxfield-core"]
+	path = libraries/voxfield-core
+	url = https://github.com/cfnptr/voxfield-core
+[submodule "libraries/opengametools"]
+	path = libraries/opengametools
+	url = https://github.com/jpaver/opengametools
