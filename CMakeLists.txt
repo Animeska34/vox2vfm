@@ -23,7 +23,7 @@ if (TARGET vox2vfm)
 endif ()
 
 project(vox2vfm
-	VERSION 0.0.1
+	VERSION 1.0.0
 	DESCRIPTION "Utility to convert MagicaVoxel models to Voxfield models"
 	HOMEPAGE_URL "https://github.com/Animeska34/vox2vfm"
 	LANGUAGES CXX)

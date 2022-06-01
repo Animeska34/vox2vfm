@@ -12,10 +12,9 @@
 
 
 int main(int argc, char *argv[]) {
-    return vox2vfm("untitled.vox", "untitled.vox.vfm", "test", "test", 1);
     if (argc < 3)
     {
-        printf("Usage:\nvox2vfm modelPath -n name -d description -s scale (optional, default: 0) -t destinationPath (optional) -c only check voxFile without conversion");
+        printf("Usage:\nvox2vfm modelPath -n name (optional, default: \"none\") -d description (optional, default: \"none\") -s scale (optional, default: 0) -t destinationPath (optional, default: filename+.vfm) -c only check voxFile without conversion");
         return INVALID_ARGUMENT;
     }
     else
@@ -25,8 +24,8 @@ int main(int argc, char *argv[]) {
         strcpy(dest, argv[1]);
         strcat(dest, ".vfm");
 
-        char *name = "test";
-        char *description = "test";
+        char *name = "none";
+        char *description = "none";
         float scale = 1;
 
         int mode = READ_ARGUMENT;
