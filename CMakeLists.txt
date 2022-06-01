@@ -53,10 +53,8 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 		OUTPUT_NAME "_vox2vfm")
 endif ()
 
-if (${CMAKE_BUILD_TYPE} MATCHES "Release" AND
-	(${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR
-	${CMAKE_SYSTEM_NAME} MATCHES "Darwin"))
-	add_custom_command(TARGET vox2vfm POST_BUILD
-		COMMAND strip "$<TARGET_FILE:vox2vfm>"
-		VERBATIM)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR
+		${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	set_target_properties(vox2vfm PROPERTIES
+			OUTPUT_NAME "_vox2vfm")
 endif ()

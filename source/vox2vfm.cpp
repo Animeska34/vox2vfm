@@ -106,8 +106,9 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                     voxelData[i].color.a = scene->palette.color[colors[i]].a;
                 }
                 //scene->palette.color[]
-                createModel8(voxelData, colorsLength, voxels, (uint16_t) size_x, (uint16_t) size_y, (uint16_t) size_z, name,
+                Model model = createModel8(voxelData, colorsLength, voxels, (uint16_t) size_x, (uint16_t) size_y, (uint16_t) size_z, name,
                              strlen(name), description, strlen(description), scale);
+
             }
             else if(scene->num_models == 0){
                 return NO_MODELS;
