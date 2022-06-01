@@ -47,7 +47,9 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
         fread(&meta, sizeof(struct voxMeta), 1, file);
         int res = check(meta);
         if(res == OK) {
-            uint32_t buffer_size = 0; // TODO: fix _filelength(_fileno(file));
+            fseek(file, 0, SEEK_END);
+            uint32_t buffer_size = ftell(file);
+            fseek(file, 0, SEEK_SET);
             uint8_t *buffer = (uint8_t *)malloc(buffer_size);
             fread(buffer, buffer_size, 1, file);
             fclose(file);
