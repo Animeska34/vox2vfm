@@ -68,6 +68,10 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                 uint32_t size_xy = size_x * size_y;
                 uint32_t size = size_xy * size_z;
 
+                if(size > 4096){
+                    return OVERSIZE;
+                }
+
                 uint8_t *voxels = (uint8_t*)malloc(size);
 
                 //TODO: optimization, remove repeating palette colors.
