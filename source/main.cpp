@@ -12,13 +12,11 @@
 
 
 int main(int argc, char *argv[]) {
+    return vox2vfm("untitled.vox", "untitled.vox.vfm", "test", "test", 1);
     if (argc < 3)
     {
-
-        //printf("Usage:\nvox2vfm modelPath -n name -d description -s scale (optional, default: 0) -t destinationPath (optional) -c only check voxFile without conversion");
-        //return INVALID_ARGUMENT;
-        return vox2vfm("untitled.vox", "untitled.vox.vfm", "test", "test", 1);
-
+        printf("Usage:\nvox2vfm modelPath -n name -d description -s scale (optional, default: 0) -t destinationPath (optional) -c only check voxFile without conversion");
+        return INVALID_ARGUMENT;
     }
     else
     {

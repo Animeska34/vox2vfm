@@ -62,10 +62,8 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                 uint32_t size_z = scene->models[0]->size_z;
 
                 uint8_t colors[256];
-                uint8_t colorsLength;
+                uint8_t colorsLength = 0;
                 //add void
-                colors[0] = 0;
-                colorsLength = 1;
 
                 uint32_t size_xy = size_x * size_y;
                 uint32_t size = size_xy * size_z;
@@ -80,19 +78,23 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                             uint32_t vfp = x + y * size_x + z * size_xy;
 
                             uint8_t color = scene->models[0]->voxel_data[mvp];
-
-                            bool found = false;
-                            for (int c = 0; c < colorsLength; c++) {
-                                if (color == colors[c]) {
-                                    found = true;
-                                    voxels[vfp] = c;
-                                    break;
-                                }
+                            if(color == 0){
+                                voxels[vfp] = 0;
                             }
-                            if (!found) {
-                                colors[colorsLength] = color;
-                                voxels[vfp] = colorsLength;
-                                colorsLength++;
+                            else {
+                                bool found = false;
+                                for (int c = 0; c < colorsLength; c++) {
+                                    if (color == colors[c]) {
+                                        found = true;
+                                        voxels[vfp] = c + 1;
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    colors[colorsLength] = color;
+                                    voxels[vfp] = colorsLength;
+                                    colorsLength++;
+                                }
                             }
                         }
                     }
@@ -105,9 +107,11 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                     voxelData[i].color.b = scene->palette.color[colors[i]].b;
                     voxelData[i].color.a = scene->palette.color[colors[i]].a;
                 }
+                uint8_t nameLength = strlen(name);
+                uint8_t descriptionLength = strlen(description);
                 //scene->palette.color[]
                 Model model = createModel8(voxelData, colorsLength, voxels, (uint16_t) size_x, (uint16_t) size_y, (uint16_t) size_z, name,
-                             strlen(name), description, strlen(description), scale);
+                             nameLength, description, descriptionLength, scale);
                 VoxfieldResult res = writeModelToFile(model, dest);
                 if(res == 0){
                     return  OK;
