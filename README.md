@@ -1,2 +1,2 @@
 # vox2vfm
- Utility to convert MagicaVoxel to Voxfield models
+ Utility to convert MagicaVoxel models to Voxfield models

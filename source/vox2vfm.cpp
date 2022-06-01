@@ -1,8 +1,15 @@
-#include <stdio.h>
 #include "vox2vfm/error.h"
 #include "vox2vfm/vox2vfm.h"
+
+extern "C" {
 #include "voxfield/core/model.h"
+}
+
+#define OGT_VOX_IMPLEMENTATION
 #include "ogt_vox.h"
+
+#include <stdio.h>
+#include <string.h>
 
 typedef struct voxMeta{
     char id[4];
@@ -40,7 +47,7 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
         fread(&meta, sizeof(struct voxMeta), 1, file);
         int res = check(meta);
         if(res == OK) {
-            uint32_t buffer_size = _filelength(_fileno(file));
+            uint32_t buffer_size = 0; // TODO: fix _filelength(_fileno(file));
             uint8_t *buffer = (uint8_t *)malloc(buffer_size);
             fread(buffer, buffer_size, 1, file);
             fclose(file);
@@ -63,7 +70,7 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
 
                 uint8_t *voxels = (uint8_t*)malloc(size);
 
-                //TODO: optimization, remove repeating pallete colors.
+                //TODO: optimization, remove repeating palette colors.
                 for (uint32_t z = 0; z < scene->models[0]->size_z; z++) {
                     for (uint32_t y = 0; y < scene->models[0]->size_y; y++) {
                         for (uint32_t x = 0; x < scene->models[0]->size_x; x++) {

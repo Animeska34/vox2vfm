@@ -24,12 +24,9 @@ endif ()
 
 project(vox2vfm
 	VERSION 0.0.1
-	DESCRIPTION "Utility  to convert MagicaVoxel to Voxfield models"
+	DESCRIPTION "Utility to convert MagicaVoxel models to Voxfield models"
 	HOMEPAGE_URL "https://github.com/Animeska34/vox2vfm"
-	LANGUAGES CXX C)
-
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_STANDARD_REQUIRED TRUE)
+	LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
@@ -42,17 +39,19 @@ configure_file(
 	vox2vfm/defines.h)
 
 add_executable(vox2vfm
-		source/main.cpp
-		source/vox2vfm.cpp)
+	source/main.cpp
+	source/vox2vfm.cpp)
 target_link_libraries(vox2vfm PRIVATE
-	voxfield-core-static
-		)
+	voxfield-core-static)
 target_include_directories(vox2vfm PRIVATE
 	${PROJECT_BINARY_DIR}
 	${PROJECT_SOURCE_DIR}/include
-	${PROJECT_SOURCE_DIR}/libraries/opengametools/src
-	${PROJECT_SOURCE_DIR}/libraries/voxfield-core/include
-		)
+	${PROJECT_SOURCE_DIR}/libraries/opengametools/src)
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	set_target_properties(vox2vfm PROPERTIES
+		OUTPUT_NAME "_vox2vfm")
+endif ()
 
 if (${CMAKE_BUILD_TYPE} MATCHES "Release" AND
 	(${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR

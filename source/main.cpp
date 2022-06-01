@@ -1,5 +1,5 @@
+#include <stdlib.h>
 #include <stdio.h>
-#include <malloc.h>
 #include <string.h>
 #include "vox2vfm/error.h"
 #include "vox2vfm/vox2vfm.h"
