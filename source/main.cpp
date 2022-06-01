@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <malloc.h>
+#include <string.h>
 #include "vox2vfm/error.h"
 #include "vox2vfm/vox2vfm.h"
 
@@ -18,7 +20,7 @@ int main(int argc, char *argv[]) {
     else
     {
         char *dest;
-        dest = malloc(strlen(argv[1]) + 5);
+        dest = (char*) malloc(strlen(argv[1]) + 5);
         strcpy(dest, argv[1]);
         strcat(dest, ".vfm");
 

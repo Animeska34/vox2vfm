@@ -42,8 +42,8 @@ configure_file(
 	vox2vfm/defines.h)
 
 add_executable(vox2vfm
-		source/main.c
-		source/vox2vfm.c)
+		source/main.cpp
+		source/vox2vfm.cpp)
 target_link_libraries(vox2vfm PRIVATE
 	voxfield-core-static
 		)
@@ -51,6 +51,7 @@ target_include_directories(vox2vfm PRIVATE
 	${PROJECT_BINARY_DIR}
 	${PROJECT_SOURCE_DIR}/include
 	${PROJECT_SOURCE_DIR}/libraries/opengametools/src
+	${PROJECT_SOURCE_DIR}/libraries/voxfield-core/include
 		)
 
 if (${CMAKE_BUILD_TYPE} MATCHES "Release" AND

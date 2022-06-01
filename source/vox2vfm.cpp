@@ -41,7 +41,7 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
         int res = check(meta);
         if(res == OK) {
             uint32_t buffer_size = _filelength(_fileno(file));
-            uint8_t *buffer = malloc(buffer_size);
+            uint8_t *buffer = (uint8_t *)malloc(buffer_size);
             fread(buffer, buffer_size, 1, file);
             fclose(file);
             const ogt_vox_scene *scene = ogt_vox_read_scene(buffer, buffer_size);
@@ -61,7 +61,7 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                 uint32_t size_xy = size_x * size_y;
                 uint32_t size = size_xy * size_z;
 
-                uint8_t *voxels = malloc(size);
+                uint8_t *voxels = (uint8_t*)malloc(size);
 
                 //TODO: optimization, remove repeating pallete colors.
                 for (uint32_t z = 0; z < scene->models[0]->size_z; z++) {
@@ -89,7 +89,7 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                     }
                 }
 
-                VoxelData *voxelData = malloc(sizeof(VoxelData) * colorsLength);
+                VoxelData *voxelData = (VoxelData*)malloc(sizeof(VoxelData) * colorsLength);
                 for (int i = 0; i < colorsLength; i++) {
                     voxelData[i].color.r = scene->palette.color[colors[i]].r;
                     voxelData[i].color.g = scene->palette.color[colors[i]].g;
@@ -115,4 +115,5 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
     {
         return FILE_NOT_EXISTS;
     }
+    return 100;
 }
