@@ -108,7 +108,13 @@ int vox2vfm(char *path, char *dest, char* name, char* description, float scale){
                 //scene->palette.color[]
                 Model model = createModel8(voxelData, colorsLength, voxels, (uint16_t) size_x, (uint16_t) size_y, (uint16_t) size_z, name,
                              strlen(name), description, strlen(description), scale);
-
+                VoxfieldResult res = writeModelToFile(model, dest);
+                if(res == 0){
+                    return  OK;
+                }
+                else {
+                    return SAVE_FALED;
+                }
             }
             else if(scene->num_models == 0){
                 return NO_MODELS;

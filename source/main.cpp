@@ -14,8 +14,11 @@
 int main(int argc, char *argv[]) {
     if (argc < 3)
     {
-        printf("Usage:\nvox2vfm modelPath -n name -d description -s scale (optional, default: 0) -t destinationPath (optional) -c only check voxFile without conversion");
-        return INVALID_ARGUMENT;
+
+        //printf("Usage:\nvox2vfm modelPath -n name -d description -s scale (optional, default: 0) -t destinationPath (optional) -c only check voxFile without conversion");
+        //return INVALID_ARGUMENT;
+        return vox2vfm("untitled.vox", "untitled.vox.vfm", "test", "test", 1);
+
     }
     else
     {
@@ -43,7 +46,10 @@ int main(int argc, char *argv[]) {
                     }
                     else if(strcmp(argv[i], "-c") == 0){
                         int res = voxCheck(argv[1]);
-                        if(res == 0) printf("This is a VOX file");
+                        if(res == 0) {
+                            printf("This is a VOX file\n");
+                            return OK;
+                        }
                         else{
                             printError(res);
                             return res;

@@ -8,6 +8,7 @@
 #define INVALID_FORMAT 3
 #define NO_MODELS 4
 #define TOO_MANY_MODELS 5
+#define SAVE_FALED 6
 
 static void printError(int error) {
     switch (error) {
