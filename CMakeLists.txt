@@ -1,4 +1,4 @@
-# Copyright 2022 Jevgenij Christoforov. All rights reserved.
+# Copyright 2022 Jevgenij Christoforov, Nikita Fediuchin. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ if (TARGET vox2vfm)
 endif ()
 
 project(vox2vfm
-	VERSION 1.0.0
-	DESCRIPTION "Utility to convert MagicaVoxel models to Voxfield models"
+	VERSION 0.0.1
+	DESCRIPTION "Utility for MagicaVoxel to Voxfield model conversion"
 	HOMEPAGE_URL "https://github.com/Animeska34/vox2vfm"
 	LANGUAGES CXX)
 
@@ -32,10 +32,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(VOXFIELD_CORE_BUILD_SHARED OFF CACHE BOOL "" FORCE)
-
-set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
-
 add_subdirectory(libraries/voxfield-core)
 
 configure_file(
@@ -43,8 +39,9 @@ configure_file(
 	vox2vfm/defines.h)
 
 add_executable(vox2vfm
-	source/main.cpp
-	source/vox2vfm.cpp)
+	source/converter.cpp
+	source/exception.cpp
+	source/main.cpp)
 target_link_libraries(vox2vfm PRIVATE
 	voxfield-core-static)
 target_include_directories(vox2vfm PRIVATE
@@ -52,13 +49,8 @@ target_include_directories(vox2vfm PRIVATE
 	${PROJECT_SOURCE_DIR}/include
 	${PROJECT_SOURCE_DIR}/libraries/opengametools/src)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR
+	${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	set_target_properties(vox2vfm PROPERTIES
 		OUTPUT_NAME "_vox2vfm")
-endif ()
-
-if (${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR
-		${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-	set_target_properties(vox2vfm PROPERTIES
-			OUTPUT_NAME "_vox2vfm")
 endif ()
