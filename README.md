@@ -28,9 +28,7 @@ Utility to convert MagicVoxel models to Voxfield models
 * Windows
 
 ## Download
-```
-https://github.com/Animeska34/vox2vfm/releases
-```
+All versions cam be dovnloaded from https://github.com/Animeska34/vox2vfm/releases
 
 ## Cloning
 ```
