@@ -1,3 +1,15 @@
+## Supported operating systems
+
+* Ubuntu
+* MacOS
+* Windows
+
+## Cloning
+
+```
+git clone --recursive https://github.com/Animeska34/vox2vfm
+```
+
 ## Usage
 
 ```
@@ -18,18 +30,6 @@ vox2vfm <path-to-input-file> [options]
 | -iy      | Icon rotation along Y-axis in degrees.            | `30`                       |
 | -ix      | Icon rotation along Z-axis in degrees.            | `0`                        |
 | --shrink | Resize model to fit it into the maximum volume    |                            |
-
-## Supported operating systems
-
-* Ubuntu
-* MacOS
-* Windows
-
-## Cloning
-
-```
-git clone --recursive https://github.com/Animeska34/vox2vfm
-```
 
 ## Third-party
 
