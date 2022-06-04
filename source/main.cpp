@@ -18,6 +18,11 @@
 #include "cmmt/angle.h"
 #include <iostream>
 
+extern "C"
+{
+#include "voxfield/core/model.h"
+}
+
 using namespace std;
 using namespace vox2vfm;
 
@@ -35,15 +40,15 @@ int main(int argc, char *argv[])
 			"    [-ix <iconX>]: Icon rotation along X-axis in degrees.\n" <<
 			"    [-iy <iconY>]: Icon rotation along Y-axis in degrees.\n" <<
 			"    [-iz <iconZ>]: Icon rotation along Z-axis in degrees.\n" <<
+			"    [-script <file-path>]: Path to the script file. (WIP)\n" <<
 			"    [--shrink]: Resize model to fit it into the maximum volume.\n" <<
+			"    [--update]: Update existing model values.\n" <<
 			"";
 		return EXIT_SUCCESS;
 	}
 
-	// TODO: read --shrink
-
 	string inputFilePath = string(argv[1]);
-	string outputFilePath;
+	string outputFilePath, scriptFilePath;
 	string name = "Unnamed";
 	string description =
 		"Converted using vox2vfm. (v"
@@ -54,6 +59,8 @@ int main(int argc, char *argv[])
 	float iconY = degToRad((cmmt_float_t)30.0);
 	float iconZ = 0.0f;
 	int index = -1;
+	bool useShrink = false;
+	bool isUpdate = false;
 
 	for (int i = 2; i < argc; i++)
 	{
@@ -149,6 +156,14 @@ int main(int argc, char *argv[])
 
 			index = stoi(string(argv[++i]));
 		}
+		else if (option == "--shrink")
+		{
+			useShrink = true;
+		}
+		else if (option == "--update")
+		{
+			isUpdate = true;
+		}
 		else
 		{
 			cout << "Error: Unknown \"" << option << "\" option.\n";
@@ -156,8 +171,99 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (outputFilePath.empty())
+	if (outputFilePath.empty() && !isUpdate)
 		outputFilePath = inputFilePath + ".vfm";
+
+	if (isUpdate)
+	{
+		if (!outputFilePath.empty())
+		{
+			cout << "Error: Can not use \"-o\" with the \"--update\" option.\n";
+			return EXIT_FAILURE;
+		}
+		if (index != -1)
+		{
+			cout << "Error: Can not use \"-i\" with the \"--update\" option.\n";
+			return EXIT_FAILURE;
+		}
+		if (useShrink)
+		{
+			cout << "Error: Can not use \"--shrink\" with the \"--update\" option.\n";
+			return EXIT_FAILURE;
+		}
+
+		Model oldModel;
+
+		VoxfieldResult voxfieldResult = createModelFromFile(
+			inputFilePath.c_str(),
+			&oldModel);
+
+		if (voxfieldResult != SUCCESS_VOXFIELD_RESULT)
+		{
+			cout << "Error: " << voxfieldResultToString(voxfieldResult) << "\n";
+			return EXIT_FAILURE;
+		}
+
+		Model newModel;
+
+		if (getModelBitness(oldModel) == MODEL_16B)
+		{
+			newModel = createModel16(
+				getModelVoxelData(oldModel),
+				getModelDataSize(oldModel),
+				(const uint16_t*)getModelVoxels(oldModel),
+				getModelSizeX(oldModel),
+				getModelSizeY(oldModel),
+				getModelSizeZ(oldModel),
+				name.c_str(),
+				name.length(),
+				description.c_str(),
+				description.length(),
+				creator.c_str(),
+				creator.length(),
+				scale, iconX, iconY, iconZ,
+				!scriptFilePath.empty());
+		}
+		else
+		{
+			newModel = createModel8(
+				getModelVoxelData(oldModel),
+				getModelDataSize(oldModel),
+				(const uint8_t*)getModelVoxels(oldModel),
+				getModelSizeX(oldModel),
+				getModelSizeY(oldModel),
+				getModelSizeZ(oldModel),
+				name.c_str(),
+				name.length(),
+				description.c_str(),
+				description.length(),
+				creator.c_str(),
+				creator.length(),
+				scale, iconX, iconY, iconZ,
+				!scriptFilePath.empty());
+		}
+
+		destroyModel(oldModel);
+
+		if (!newModel)
+		{
+			cout << "Error: Failed to create a new model.\n";
+			return EXIT_FAILURE;
+		}
+
+		voxfieldResult = writeModelToFile(
+			newModel,
+			inputFilePath.c_str());
+		destroyModel(newModel);
+
+		if (voxfieldResult != SUCCESS_VOXFIELD_RESULT)
+		{
+			cout << "Error: " << voxfieldResultToString(voxfieldResult) << "\n";
+			return EXIT_FAILURE;
+		}
+
+		return SUCCESS_VOXFIELD_RESULT;
+	}
 
 	Converter converter;
 
