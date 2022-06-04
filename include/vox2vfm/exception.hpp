@@ -1,4 +1,4 @@
-// Copyright 2022 Jevgenij Christoforov. All rights reserved.
+// Copyright 2022 Jevgenij Christoforov, Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,15 +13,19 @@
 // limitations under the License.
 
 #pragma once
-#include <cstdint>
+#include <string>
+#include <exception>
 
-#define __VOX2VFM__
+namespace vox2vfm
+{
+	using namespace std;
 
-#define VOX2VFM_VERSION_MAJOR @vox2vfm_VERSION_MAJOR@
-#define VOX2VFM_VERSION_MINOR @vox2vfm_VERSION_MINOR@
-#define VOX2VFM_VERSION_PATCH @vox2vfm_VERSION_PATCH@
-
-#define VOX2VFM_VERSION_STRING \
-	"@vox2vfm_VERSION_MAJOR@." \
-	"@vox2vfm_VERSION_MINOR@." \
-	"@vox2vfm_VERSION_PATCH@"
+	class Vox2vfmException : public exception
+	{
+	protected:
+		string error;
+	public:
+		Vox2vfmException(const string& error);
+		const char* what() const noexcept override;
+	};
+}

@@ -1,4 +1,4 @@
-// Copyright 2022 Jevgenij Christoforov. All rights reserved.
+// Copyright 2022 Jevgenij Christoforov, Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,15 +13,33 @@
 // limitations under the License.
 
 #pragma once
-#include <cstdint>
+#include "vox2vfm/exception.hpp"
 
-#define __VOX2VFM__
+#include <vector>
+#include <string>
 
-#define VOX2VFM_VERSION_MAJOR @vox2vfm_VERSION_MAJOR@
-#define VOX2VFM_VERSION_MINOR @vox2vfm_VERSION_MINOR@
-#define VOX2VFM_VERSION_PATCH @vox2vfm_VERSION_PATCH@
+namespace vox2vfm
+{
+	using namespace std;
 
-#define VOX2VFM_VERSION_STRING \
-	"@vox2vfm_VERSION_MAJOR@." \
-	"@vox2vfm_VERSION_MINOR@." \
-	"@vox2vfm_VERSION_PATCH@"
+	class Converter
+	{
+	protected:
+		vector<uint8_t> buffer;
+	public:
+		Converter();
+		explicit Converter(size_t bufferCapacity);
+
+		void convert(
+			const string& inputFilePath,
+			const string& outputFilePath,
+			const string& name,
+			const string& description,
+			const string& creator,
+			float scale,
+			float iconX,
+			float iconY,
+			float iconZ,
+			int index);
+	};
+}
