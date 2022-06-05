@@ -68,11 +68,11 @@ namespace vox2vfm
 			{
 				for (uint16_t x = 0; x < sizeX; x++)
 				{
-					size_t voxIndex = x + z * sizeX + y * vfmSizeXY;
-					size_t vfmIndex = x + y * sizeX + z * voxSizeXY;
+					size_t voxIndex = x + y * sizeX + z * voxSizeXY;
+					size_t vfmIndex = x + z * sizeX + y * vfmSizeXY;
 					assert(voxIndex < voxelSize);
 					assert(vfmIndex < voxelSize);
-					vfmVoxels[voxIndex] = voxVoxels[vfmIndex];
+					vfmVoxels[vfmIndex] = voxVoxels[voxIndex];
 				}
 			}
 		}
@@ -178,8 +178,8 @@ namespace vox2vfm
 			voxelData.size(),
 			voxels.data(),
 			sizeX,
-			sizeY,
 			sizeZ,
+			sizeY,
 			name.c_str(),
 			name.length(),
 			description.c_str(),
@@ -199,8 +199,8 @@ namespace vox2vfm
 			voxelData.size(),
 			voxels.data(),
 			sizeX,
-			sizeY,
 			sizeZ,
+			sizeY,
 			name.c_str(),
 			name.length(),
 			description.c_str(),
