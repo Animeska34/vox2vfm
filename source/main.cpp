@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 			"    [-script <file-path>]: Path to the script file. (WIP)\n" <<
 			"    [--shrink]: Resize model to fit it into the maximum volume.\n" <<
 			"    [--update]: Update existing model values.\n" <<
+			"    [--info]: Show existing model values.\n" <<
 			"";
 		return EXIT_SUCCESS;
 	}
@@ -59,8 +60,9 @@ int main(int argc, char *argv[])
 	float iconY = degToRad((cmmt_float_t)30.0);
 	float iconZ = 0.0f;
 	int index = -1;
-	bool useShrink = false;
+	bool isShrink = false;
 	bool isUpdate = false;
+	bool isInfo = false;
 
 	for (int i = 2; i < argc; i++)
 	{
@@ -158,11 +160,15 @@ int main(int argc, char *argv[])
 		}
 		else if (option == "--shrink")
 		{
-			useShrink = true;
+			isShrink = true;
 		}
 		else if (option == "--update")
 		{
 			isUpdate = true;
+		}
+		else if (option == "--info")
+		{
+			isInfo = true;
 		}
 		else
 		{
@@ -174,7 +180,42 @@ int main(int argc, char *argv[])
 	if (outputFilePath.empty() && !isUpdate)
 		outputFilePath = inputFilePath + ".vfm";
 
-	if (isUpdate)
+	if (isInfo)
+	{
+		Model model;
+
+		VoxfieldResult voxfieldResult = createModelFromFile(
+			inputFilePath.c_str(),
+			&model);
+
+		if (voxfieldResult != SUCCESS_VOXFIELD_RESULT)
+		{
+			cout << "Error: " << voxfieldResultToString(voxfieldResult) << "\n";
+			return EXIT_FAILURE;
+		}
+
+		cout << "Model information:\n" <<
+			"    Name: " << getModelName(model) << "\n" <<
+			"    Description: " << getModelDescription(model) << "\n" <<
+			"    Creator: " << getModelCreator(model) << "\n" <<
+			"    Size: " <<
+				getModelSizeX(model) << ", " <<
+				getModelSizeY(model) << ", " <<
+				getModelSizeZ(model) << "\n" <<
+			"    Scale: " << getModelScale(model) << "\n" <<
+			"    Icon: " <<
+				radToDeg(getModelIconX(model)) << ", " <<
+				radToDeg(getModelIconY(model)) << ", " <<
+				radToDeg(getModelIconZ(model)) << "\n" <<
+			"    Has script: " << (getModelHasScript(model) ? "true" : "false") << "\n" <<
+			"    Data size: " << getModelDataSize(model) << "\n" <<
+			"    Bitness: " << (getModelBitness(model) == MODEL_16B ? "16" : "8") << " bit\n" <<
+			"";
+
+		destroyModel(model);
+		return EXIT_SUCCESS;
+	}
+	else if (isUpdate)
 	{
 		if (!outputFilePath.empty())
 		{
@@ -186,7 +227,7 @@ int main(int argc, char *argv[])
 			cout << "Error: Can not use \"-i\" with the \"--update\" option.\n";
 			return EXIT_FAILURE;
 		}
-		if (useShrink)
+		if (isShrink)
 		{
 			cout << "Error: Can not use \"--shrink\" with the \"--update\" option.\n";
 			return EXIT_FAILURE;

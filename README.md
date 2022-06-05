@@ -33,6 +33,8 @@ vox2vfm <path-to-input-file> [options]
 | -iy      | Icon rotation along Y-axis in degrees.            | `30`                       |
 | -ix      | Icon rotation along Z-axis in degrees.            | `0`                        |
 | --shrink | Resize model to fit it into the maximum volume    |                            |
+| --update | Update existing model values                      |                            |
+| --info   | Show existing model values                        |                            |
 
 ## Third-party
 
